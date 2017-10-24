@@ -2,6 +2,10 @@ const assert = require('chai').assert;
 const Node = require('../lib/Node.js');
 const Trie = require('../lib/Trie.js');
 
+const fs = require('fs');
+const text = "/usr/share/dict/words";
+const dictionary = fs.readFileSync(text).toString().trim().split('\n');
+
 let node;
 let trie;
 
@@ -20,8 +24,8 @@ describe('Trie', () => {
 		assert.deepEqual(trie.root, node);
 	});
 
-	it('Should have a default starting num of 0', () => {
-		assert.equal(trie.num, 0);
+	it('Should have a default starting count of 0', () => {
+		assert.equal(trie.count, 0);
 	});
 
 	describe('Insert', () => {
@@ -34,20 +38,20 @@ describe('Trie', () => {
 			assert.equal(trie.root.letter, '');
 		});
 
-		it('Should have num increase when a word is inserted', () => {
-			assert.equal(trie.num, 0);
+		it('Should have count increase when a word is inserted', () => {
+			assert.equal(trie.count, 0);
 			trie.insert('pizza');
-			assert.equal(trie.num, 1);
+			assert.equal(trie.count, 1);
 		});
 
-		it('Should have num increase with mutiple words', () => {
-			assert.equal(trie.num, 0);
+		it('Should have count increase with mutiple words', () => {
+			assert.equal(trie.count, 0);
 			trie.insert('hog');
-			assert.equal(trie.num, 1);
+			assert.equal(trie.count, 1);
 			trie.insert('branch');
-			assert.equal(trie.num, 2);
+			assert.equal(trie.count, 2);
 			trie.insert('stupid');
-			assert.equal(trie.num, 3);
+			assert.equal(trie.count, 3);
 		});
 
 		it('Should have a child of p from the empty root', () => {
@@ -80,6 +84,11 @@ describe('Trie', () => {
 			assert.isFunction(trie.suggest);
 		});
 
+		it('Should return array', () => {
+			trie.insert('pizza');
+			assert.isArray(trie.suggest('piz'));
+		})
+
 	});
 
 	describe('Populate', () => {
@@ -87,11 +96,9 @@ describe('Trie', () => {
 			assert.isFunction(trie.populate);
 		});
 
-	});
-
-	describe('Count', () => {
-		it('Should be a method', () => {
-			assert.isFunction(trie.count);
+		it('Should populate with 235886 words', () => {
+			trie.populate(dictionary);
+			assert.equal(trie.count, 235886);
 		});
 
 	});
