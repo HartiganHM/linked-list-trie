@@ -68,6 +68,11 @@ describe('Trie', () => {
 			assert.equal(trie.root.children.p.children.i.children.z.children.z.letter, 'z');
 			assert.equal(trie.root.children.p.children.i.children.z.children.z.children.a.letter, 'a');
 		});
+
+		it('Should set wordEnd property to true when no letters left', () => {
+			trie.insert('p');
+			assert.equal(trie.root.children.p.wordEnd, true);
+		})
 	});
 
 	describe('Sugggest', () => {
