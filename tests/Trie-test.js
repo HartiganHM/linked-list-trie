@@ -20,30 +20,34 @@ describe('Trie', () => {
 		assert.deepEqual(trie.root, node);
 	});
 
-	it('Should have a default starting count of 0', () => {
-		assert.equal(trie.count, 0);
+	it('Should have a default starting num of 0', () => {
+		assert.equal(trie.num, 0);
 	});
 
 	describe('Insert', () => {
+		it('Should be a method', () => {
+			assert.isFunction(trie.insert);
+		});
+
 		it('Should have an empty starting root', () => {
 			trie.insert('pizza');
 			assert.equal(trie.root.letter, '');
 		});
 
-		it('Should have count increase when a word is inserted', () => {
-			assert.equal(trie.count, 0);
+		it('Should have num increase when a word is inserted', () => {
+			assert.equal(trie.num, 0);
 			trie.insert('pizza');
-			assert.equal(trie.count, 1);
+			assert.equal(trie.num, 1);
 		});
 
-		it('Should have count increase with mutiple words', () => {
-			assert.equal(trie.count, 0);
+		it('Should have num increase with mutiple words', () => {
+			assert.equal(trie.num, 0);
 			trie.insert('hog');
-			assert.equal(trie.count, 1);
+			assert.equal(trie.num, 1);
 			trie.insert('branch');
-			assert.equal(trie.count, 2);
+			assert.equal(trie.num, 2);
 			trie.insert('stupid');
-			assert.equal(trie.count, 3);
+			assert.equal(trie.num, 3);
 		});
 
 		it('Should have a child of p from the empty root', () => {
@@ -67,18 +71,30 @@ describe('Trie', () => {
 	});
 
 	describe('Sugggest', () => {
+		it('Should be a method', () => {
+			assert.isFunction(trie.suggest);
+		});
 
 	});
 
 	describe('Populate', () => {
+		it('Should be a method', () => {
+			assert.isFunction(trie.populate);
+		});
 
 	});
 
 	describe('Count', () => {
+		it('Should be a method', () => {
+			assert.isFunction(trie.count);
+		});
 
 	});
 
 	describe('Select', () => {
+		it('Should be a method', () => {
+			assert.isFunction(trie.select);
+		});
 
 	});
 
