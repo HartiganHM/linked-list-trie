@@ -1,9 +1,9 @@
-import { expect } from 'chai';
-import { bubbleSort, insertionSort, mergeSort, quickSort, randomNumber } from '@hartiganhm/sorting-suite';
+// const assert = require('chai').assert;
+// const { bubbleSort, insertionSort, mergeSort, quickSort, randomNumber } = require('@hartiganhm/sorting-suite');
 
-describe('Example Test File', () => {
-	it('should successfully us sorts we imported (like badasses)', () => {
-		console.log(bubbleSort)
-		expect(bubbleSort([3, 2, 1])).to.deep.equal([1, 2, 3]);
-	})
-})
+// describe('Example Test File', () => {
+// 	it('should successfully us sorts we imported (like badasses)', () => {
+// 		console.log(bubbleSort)
+// 		assert.deepEqual(bubbleSort([3, 2, 1]), [1, 2, 3]);
+// 	})
+// })
