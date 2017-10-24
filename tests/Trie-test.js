@@ -47,14 +47,39 @@ describe('Trie', () => {
 		});
 
 		it('Should have a child of p from the empty root', () => {
-			trie.insert('p');
-			console.log(Object.keys(trie.root.children));
-			assert.equal(trie.root.children.letter, 'p');
+			trie.insert('pizza');
+			assert.equal(trie.root.children.p.letter, 'p');
 		});
 
-		it.skip('Should split a word into an array of letters', () => {
-			assert.deepEqual(trie.insert('pizza'), )
-		})
-	})
+		it('Should have a child of i from the letter p', () => {
+			trie.insert('pizza');
+			assert.equal(trie.root.children.p.children.i.letter, 'i');
+		});
+
+		it('Should break words out into separate nodes by letter', () => {
+			trie.insert('pizza');
+			assert.equal(trie.root.children.p.letter, 'p');
+			assert.equal(trie.root.children.p.children.i.letter, 'i');
+			assert.equal(trie.root.children.p.children.i.children.z.letter, 'z');
+			assert.equal(trie.root.children.p.children.i.children.z.children.z.letter, 'z');
+			assert.equal(trie.root.children.p.children.i.children.z.children.z.children.a.letter, 'a');
+		});
+	});
+
+	describe('Sugggest', () => {
+
+	});
+
+	describe('Populate', () => {
+
+	});
+
+	describe('Count', () => {
+
+	});
+
+	describe('Select', () => {
+
+	});
 
 })
