@@ -80,7 +80,7 @@ describe('Trie', () => {
 		it('Should change words to lowercase', () => {
 			trie.insert('FUN');
 			assert.deepEqual(trie.suggest('fu'), ['fun']);
-		})
+		});
 
 	});
 
@@ -155,46 +155,58 @@ describe('Trie', () => {
 			assert.isFunction(trie.select);
 		});
 
-		it('Should add a selected word to trie.selections array', () => {
+		it('Should add a selected word to trie.suggestions array', () => {
+			trie.insert('pizza');
 			trie.select('pizza');
-			assert.deepEqual(Object.keys(trie.selections), ['pizza']);
+			assert.deepEqual(trie.suggest('pi'), ['pizza']);
 		});
 
-		it('Should have new selected words start with a selection value of 1', () => {
+		it('Should have new selected words start with a popularity value of 1', () => {
+			trie.insert('pizza');
 			trie.select('pizza');
-			assert.deepEqual(trie.selections.pizza, 1);
+			assert.equal(trie.root.children.p.children.i.children.z.children.z.children.a.popularity, 1);
 		});
 
 		it('Should have the selection value increase if a word is selected multiple times', () => {
+			trie.insert('pizza');
 			trie.select('pizza');
-			assert.deepEqual(trie.selections.pizza, 1);
+			assert.deepEqual(trie.root.children.p.children.i.children.z.children.z.children.a.popularity, 1);
+
 			trie.select('pizza');
-			assert.deepEqual(trie.selections.pizza, 2);
+			assert.deepEqual(trie.root.children.p.children.i.children.z.children.z.children.a.popularity, 2);
+
 			trie.select('pizza');
-			assert.deepEqual(trie.selections.pizza, 3);
+			assert.deepEqual(trie.root.children.p.children.i.children.z.children.z.children.a.popularity, 3);
 		});
 
 		it('Should be able to hold more than one word', () => {
+			trie.insert('pizza');
 			trie.select('pizza');
-			assert.deepEqual(trie.selections.pizza, 1);
+			assert.deepEqual(trie.root.children.p.children.i.children.z.children.z.children.a.popularity, 1);
+
+			trie.insert('apple');
 			trie.select('apple');
-			assert.deepEqual(trie.selections.apple, 1);
-			assert.deepEqual(Object.keys(trie.selections), ['pizza', 'apple']);
+			assert.deepEqual(trie.root.children.a.children.p.children.p.children.l.children.e.popularity, 1);
+
+			assert.deepEqual(trie.suggest(''), ['pizza', 'apple']);
 		});
 
 		it('Should move words selected more than once to the front of the suggestion array', () => {
 			trie.insert('pie');
+			trie.select('pie');
+			assert.deepEqual(trie.root.children.p.children.i.children.e.popularity, 1);
+
 			trie.insert('pizza');
 			trie.select('pizza');
-			assert.deepEqual(trie.selections.pizza, 1);
-			trie.select('pie');
-			assert.deepEqual(trie.selections.pie, 1);
-			assert.deepEqual(Object.keys(trie.selections), ['pizza', 'pie']);
+			assert.deepEqual(trie.root.children.p.children.i.children.z.children.z.children.a.popularity, 1);
+			
 			assert.deepEqual(trie.suggest('pi'), ['pie', 'pizza']);
+
 			trie.select('pizza');
-			assert.deepEqual(trie.selections.pizza, 2);
+			assert.deepEqual(trie.root.children.p.children.i.children.z.children.z.children.a.popularity, 2);
+
 			assert.deepEqual(trie.suggest('pi'), ['pizza', 'pie']);
-		})
+		});
 
 	});
 
