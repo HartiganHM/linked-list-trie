@@ -84,7 +84,7 @@ describe('Trie', () => {
 			assert.isFunction(trie.suggest);
 		});
 
-		it('Should return array', () => {
+		it('Should return an array', () => {
 			trie.insert('pizza');
 			assert.isArray(trie.suggest('piz'));
 		})
