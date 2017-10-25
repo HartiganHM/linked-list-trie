@@ -155,6 +155,47 @@ describe('Trie', () => {
 			assert.isFunction(trie.select);
 		});
 
+		it('Should add a selected word to trie.selections array', () => {
+			trie.select('pizza');
+			assert.deepEqual(Object.keys(trie.selections), ['pizza']);
+		});
+
+		it('Should have new selected words start with a selection value of 1', () => {
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 1);
+		});
+
+		it('Should have the selection value increase if a word is selected multiple times', () => {
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 1);
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 2);
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 3);
+		});
+
+		it('Should be able to hold more than one word', () => {
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 1);
+			trie.select('apple');
+			assert.deepEqual(trie.selections.apple, 1);
+			assert.deepEqual(Object.keys(trie.selections), ['pizza', 'apple']);
+		});
+
+		it('Should move words selected more than once to the front of the suggestion array', () => {
+			trie.insert('pie');
+			trie.insert('pizza');
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 1);
+			trie.select('pie');
+			assert.deepEqual(trie.selections.pie, 1);
+			assert.deepEqual(Object.keys(trie.selections), ['pizza', 'pie']);
+			assert.deepEqual(trie.suggest('pi'), ['pie', 'pizza']);
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 2);
+			assert.deepEqual(trie.suggest('pi'), ['pizza', 'pie']);
+		})
+
 	});
 
 })
