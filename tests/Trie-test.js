@@ -148,8 +148,6 @@ describe('Trie', () => {
 			assert.deepEqual(trie.suggest('a'), ['ape', 'apple', 'ascot']);
 		});
 
-
-
 	});
 
 	describe('Select', () => {
