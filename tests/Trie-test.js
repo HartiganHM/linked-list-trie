@@ -84,9 +84,14 @@ describe('Trie', () => {
 			assert.isFunction(trie.suggest);
 		});
 
-		it('Should return array', () => {
+		it('Should return an array', () => {
 			trie.insert('pizza');
 			assert.isArray(trie.suggest('piz'));
+		})
+
+		it('Should return null if nothing is passed in', () => {
+			trie.insert();
+			assert.deepEqual(trie.suggest(), null)
 		})
 
 	});
