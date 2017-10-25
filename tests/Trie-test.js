@@ -89,11 +89,6 @@ describe('Trie', () => {
 			assert.isArray(trie.suggest('piz'));
 		})
 
-		it('Should return null if nothing is passed in', () => {
-			trie.insert();
-			assert.deepEqual(trie.suggest(), null)
-		})
-
 	});
 
 	describe('Populate', () => {
