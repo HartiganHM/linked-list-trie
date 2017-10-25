@@ -1,7 +1,6 @@
 const assert = require('chai').assert;
 const Node = require('../lib/Node.js');
 const Trie = require('../lib/Trie.js');
-
 const fs = require('fs');
 const text = "/usr/share/dict/words";
 const dictionary = fs.readFileSync(text).toString().trim().split('\n');
@@ -76,7 +75,13 @@ describe('Trie', () => {
 		it('Should set wordEnd property to true when no letters left', () => {
 			trie.insert('p');
 			assert.equal(trie.root.children.p.wordEnd, true);
+		});
+
+		it('Should change words to lowercase', () => {
+			trie.insert('FUN');
+			assert.deepEqual(trie.suggest('fu'), ['fun']);
 		})
+
 	});
 
 	describe('Sugggest', () => {
@@ -87,18 +92,38 @@ describe('Trie', () => {
 		it('Should return an array', () => {
 			trie.insert('pizza');
 			assert.isArray(trie.suggest('piz'));
-		})
+		});
 
 		it('Should suggest words that have been inserted', () => {
 			trie.insert('pizza');
 			assert.deepEqual(trie.suggest('piz'), ['pizza']);
-		})
+		});
 
 		it('Should suggest multiple words that have been inserted', () => {
 			trie.insert('pizza');
 			trie.insert('pizzeria');
 			assert.deepEqual(trie.suggest('piz'), ['pizza', 'pizzeria']);
-		})
+		});
+
+		it('Should not suggest words that do not partially match the inserted phrase', () => {
+			trie.insert('pizza');
+			trie.insert('apple');
+			trie.insert('ape');
+			assert.deepEqual(trie.suggest('ap'), ['apple', 'ape']);
+		});
+
+		it('Should suggest all inserted words on an empty string', () => {
+			trie.insert('pizza');
+			trie.insert('pie');
+			trie.insert('apple');
+			trie.insert('ape');
+			assert.deepEqual(trie.suggest(''), ['pizza', 'pie', 'apple', 'ape']);
+		});
+
+		it('Should change pharses to lowercase to match inserted words', () => {
+			trie.insert('bologna');
+			assert.deepEqual(trie.suggest('BOLOG'), ['bologna']);
+		});
 
 	});
 
@@ -107,9 +132,20 @@ describe('Trie', () => {
 			assert.isFunction(trie.populate);
 		});
 
-		it('Should populate with 235886 words', () => {
+		it('Should populate with 235886 words from dictionary', () => {
 			trie.populate(dictionary);
 			assert.equal(trie.count, 235886);
+		});
+
+		it('Should suggest words from the dictionary', () => {
+			trie.populate(dictionary);
+			assert.deepEqual(trie.suggest('piz'), [ 'pize', 'pizza', 'pizzeria', 'pizzicato', 'pizzle' ])
+		})
+
+		it('Should suggest populated words', () => {
+			trie.populate(['ape', 'apple', 'ascot']);
+			assert.equal(trie.count, 3);
+			assert.deepEqual(trie.suggest('a'), ['ape', 'apple', 'ascot']);
 		});
 
 	});
@@ -118,6 +154,47 @@ describe('Trie', () => {
 		it('Should be a method', () => {
 			assert.isFunction(trie.select);
 		});
+
+		it('Should add a selected word to trie.selections array', () => {
+			trie.select('pizza');
+			assert.deepEqual(Object.keys(trie.selections), ['pizza']);
+		});
+
+		it('Should have new selected words start with a selection value of 1', () => {
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 1);
+		});
+
+		it('Should have the selection value increase if a word is selected multiple times', () => {
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 1);
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 2);
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 3);
+		});
+
+		it('Should be able to hold more than one word', () => {
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 1);
+			trie.select('apple');
+			assert.deepEqual(trie.selections.apple, 1);
+			assert.deepEqual(Object.keys(trie.selections), ['pizza', 'apple']);
+		});
+
+		it('Should move words selected more than once to the front of the suggestion array', () => {
+			trie.insert('pie');
+			trie.insert('pizza');
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 1);
+			trie.select('pie');
+			assert.deepEqual(trie.selections.pie, 1);
+			assert.deepEqual(Object.keys(trie.selections), ['pizza', 'pie']);
+			assert.deepEqual(trie.suggest('pi'), ['pie', 'pizza']);
+			trie.select('pizza');
+			assert.deepEqual(trie.selections.pizza, 2);
+			assert.deepEqual(trie.suggest('pi'), ['pizza', 'pie']);
+		})
 
 	});
 
