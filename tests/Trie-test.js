@@ -87,18 +87,33 @@ describe('Trie', () => {
 		it('Should return an array', () => {
 			trie.insert('pizza');
 			assert.isArray(trie.suggest('piz'));
-		})
+		});
 
 		it('Should suggest words that have been inserted', () => {
 			trie.insert('pizza');
 			assert.deepEqual(trie.suggest('piz'), ['pizza']);
-		})
+		});
 
 		it('Should suggest multiple words that have been inserted', () => {
 			trie.insert('pizza');
 			trie.insert('pizzeria');
 			assert.deepEqual(trie.suggest('piz'), ['pizza', 'pizzeria']);
-		})
+		});
+
+		it('Should not suggest words that do not partially match the inserted phrase', () => {
+			trie.insert('pizza');
+			trie.insert('apple');
+			trie.insert('ape');
+			assert.deepEqual(trie.suggest('ap'), ['apple', 'ape']);
+		});
+
+		it('Should suggest all inserted words on an empty string', () => {
+			trie.insert('pizza');
+			trie.insert('pie');
+			trie.insert('apple');
+			trie.insert('ape');
+			assert.deepEqual(trie.suggest(''), ['pizza', 'pie', 'apple', 'ape']);
+		});
 
 	});
 
