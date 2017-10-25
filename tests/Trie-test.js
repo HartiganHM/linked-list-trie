@@ -89,6 +89,17 @@ describe('Trie', () => {
 			assert.isArray(trie.suggest('piz'));
 		})
 
+		it('Should suggest words that have been inserted', () => {
+			trie.insert('pizza');
+			assert.deepEqual(trie.suggest('piz'), ['pizza']);
+		})
+
+		it('Should suggest multiple words that have been inserted', () => {
+			trie.insert('pizza');
+			trie.insert('pizzeria');
+			assert.deepEqual(trie.suggest('piz'), ['pizza', 'pizzeria']);
+		})
+
 	});
 
 	describe('Populate', () => {
