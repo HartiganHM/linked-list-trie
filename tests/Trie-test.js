@@ -1,7 +1,6 @@
 const assert = require('chai').assert;
 const Node = require('../lib/Node.js');
 const Trie = require('../lib/Trie.js');
-
 const fs = require('fs');
 const text = "/usr/share/dict/words";
 const dictionary = fs.readFileSync(text).toString().trim().split('\n');
@@ -76,7 +75,13 @@ describe('Trie', () => {
 		it('Should set wordEnd property to true when no letters left', () => {
 			trie.insert('p');
 			assert.equal(trie.root.children.p.wordEnd, true);
+		});
+
+		it('Should change words to lowercase', () => {
+			trie.insert('FUN');
+			assert.deepEqual(trie.suggest('fu'), ['fun']);
 		})
+
 	});
 
 	describe('Sugggest', () => {
@@ -115,6 +120,11 @@ describe('Trie', () => {
 			assert.deepEqual(trie.suggest(''), ['pizza', 'pie', 'apple', 'ape']);
 		});
 
+		it('Should change pharses to lowercase to match inserted words', () => {
+			trie.insert('bologna');
+			assert.deepEqual(trie.suggest('BOLOG'), ['bologna']);
+		});
+
 	});
 
 	describe('Populate', () => {
@@ -122,10 +132,23 @@ describe('Trie', () => {
 			assert.isFunction(trie.populate);
 		});
 
-		it('Should populate with 235886 words', () => {
+		it('Should populate with 235886 words from dictionary', () => {
 			trie.populate(dictionary);
 			assert.equal(trie.count, 235886);
 		});
+
+		it('Should suggest words from the dictionary', () => {
+			trie.populate(dictionary);
+			assert.deepEqual(trie.suggest('piz'), [ 'pize', 'pizza', 'pizzeria', 'pizzicato', 'pizzle' ])
+		})
+
+		it('Should suggest populated words', () => {
+			trie.populate(['ape', 'apple', 'ascot']);
+			assert.equal(trie.count, 3);
+			assert.deepEqual(trie.suggest('a'), ['ape', 'apple', 'ascot']);
+		});
+
+
 
 	});
 
