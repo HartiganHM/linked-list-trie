@@ -1,5 +1,7 @@
-function filterMe (array) {
-  return array
-}
+const Node = require('../lib/Node.js');
+const Trie = require('../lib/Trie.js');
 
-export default filterMe
+module.exports = { 
+	Node,
+	Trie
+}
