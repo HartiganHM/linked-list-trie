@@ -25,7 +25,7 @@ describe('Node', () => {
 		assert.equal(node.wordEnd, false);
 	});
 
-	it('SHould start with  default value of 0 for the popularity property', () => {
+	it('Should start with  default value of 0 for the popularity property', () => {
 		assert.equal(node.popularity, 0);
 	});
 })
