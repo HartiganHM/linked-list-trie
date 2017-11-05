@@ -1,7 +1,7 @@
-import Node from '../lib/Node.js';
-import Trie from '../lib/Trie.js';
+const Node = require('../lib/Node.js');
+const Trie = require('../lib/Trie.js');
 
-export {
+module.exports = {
 	Node,
 	Trie
 }
