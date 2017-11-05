@@ -1,6 +1,6 @@
 {
   "name": "@hartiganhm/linked-list",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Sorting Binary Tree for Suggesting Words from Dictionary",
   "main": "index.js",
   "directories": {
