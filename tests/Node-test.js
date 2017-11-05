@@ -1,5 +1,5 @@
-const assert = require('chai').assert;
-const Node = require('../lib/Node.js');
+import { assert } from 'chai';
+import Node from '../lib/Node.js';
 
 let node;
 

@@ -1,7 +1,8 @@
-const assert = require('chai').assert;
-const Node = require('../lib/Node.js');
-const Trie = require('../lib/Trie.js');
-const fs = require('fs');
+import { assert } from 'chai';
+import Node from '../lib/Node.js';
+import Trie from '../lib/Trie.js';
+import fs from 'fs';
+
 const text = "/usr/share/dict/words";
 const dictionary = fs.readFileSync(text).toString().trim().split('\n');
 
