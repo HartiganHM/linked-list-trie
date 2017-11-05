@@ -1,7 +1,3 @@
-const Node = require('../lib/Node.js');
-const Trie = require('../lib/Trie.js');
+const Trie = require('./lib/Trie');
 
-module.exports = {
-	Node,
-	Trie
-}
+module.exports = Trie;
